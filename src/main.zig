@@ -14,6 +14,23 @@ pub fn main() !void {
     try helper(&arr);
     const target: i64 = 3;
     try twoSum(&arr, target);
+    const num: i64 = 1212;
+    try isPalindrome(num);
+}
+fn isPalindrome(original: i64) !void {
+    if (original < 0) {
+        print("false\n", .{});
+    }
+    var num = original;
+    var reversed: i64 = 0;
+    while (num > 0) : (num = @divFloor(num, 10)) {
+        reversed = reversed * 10 + @rem(num, 10);
+    }
+    if (original == reversed) {
+        print("true\n", .{});
+    } else {
+        print("false\n", .{});
+    }
 }
 
 pub fn twoSum(arr: *std.ArrayList(i64), target: i64) !void {
