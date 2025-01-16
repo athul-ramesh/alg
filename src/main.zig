@@ -16,6 +16,31 @@ pub fn main() !void {
     try twoSum(&arr, target);
     const num: i64 = 1212;
     try isPalindrome(num);
+    const strs = [3][]const u8{ "floi", "flower", "toi" };
+    longestCommonPrefix(strs);
+}
+fn longestCommonPrefix(strs: [3][]const u8) void {
+    if (strs.len == 0) {
+        print("invalid", .{});
+        return;
+    }
+    if (strs.len == 1) {
+        print("{}\n", .{strs[0]});
+        return;
+    }
+    const prefix = strs[0];
+    var poiter = prefix.len;
+    for (strs) |item| {
+        const local = item;
+        const smaller = if (local.len < prefix.len) local.len else prefix.len;
+        for (0..smaller) |i| {
+            if (local[i] != prefix[i]) {
+                poiter = i;
+                break;
+            }
+        }
+    }
+    print("{s}\n", .{prefix[0..poiter]});
 }
 fn isPalindrome(original: i64) !void {
     if (original < 0) {
