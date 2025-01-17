@@ -18,6 +18,8 @@ pub fn main() !void {
     try isPalindrome(num);
     const strs = [3][]const u8{ "floi", "flower", "toi" };
     longestCommonPrefix(strs);
+    const s = "()[]{}}";
+    try isValidParantheses(s);
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -74,4 +76,42 @@ pub fn twoSum(arr: *std.ArrayList(i64), target: i64) !void {
         }
     }
     print("{any}\n", .{answer});
+}
+
+fn getClosingBracket(ref: *const [3]u8, c: u8) usize {
+    for (ref, 0..ref.len) |item, i| {
+        if (item == c) {
+            return i;
+        }
+    }
+    return 3;
+}
+fn isValidParantheses(s: []const u8) !void {
+    if (s.len == 0 or s.len == 1) {
+        print("false\n", .{});
+        return;
+    }
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var arr = std.ArrayList(i64).init(gpa.allocator());
+    defer arr.deinit();
+
+    const open = [_]u8{ '(', '{', '[' };
+    const close = [_]u8{ ')', '}', ']' };
+    for (s) |item| {
+        const index = getClosingBracket(&open, item);
+        if (index == 3) {
+            const top = if (arr.items.len > 0) arr.pop() else '0';
+            if (top != item) {
+                print("false\n", .{});
+                return;
+            }
+        } else {
+            try arr.append(close[getClosingBracket(&open, item)]);
+        }
+    }
+    if (arr.items.len == 0) {
+        print("true\n", .{});
+    } else {
+        print("false\n", .{});
+    }
 }
