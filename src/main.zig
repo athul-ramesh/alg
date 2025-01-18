@@ -20,6 +20,9 @@ pub fn main() !void {
     longestCommonPrefix(strs);
     const s = "()[]{}}";
     try isValidParantheses(s);
+    var duplicateArray = [2]i16{ 1, 2 };
+    const ans = removeDuplicates(&duplicateArray);
+    print("length of unique elements is {}\n", .{ans});
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -114,4 +117,18 @@ fn isValidParantheses(s: []const u8) !void {
     } else {
         print("false\n", .{});
     }
+}
+
+fn removeDuplicates(arr: *[2]i16) usize {
+    if (arr.len == 0) {
+        return 0;
+    }
+    var i: usize = 0;
+    for (1..arr.len) |j| {
+        if (arr[j] != arr[i]) {
+            i += 1;
+            arr[i] = arr[j];
+        }
+    }
+    return i + 1;
 }
