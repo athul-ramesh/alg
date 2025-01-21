@@ -23,6 +23,11 @@ pub fn main() !void {
     var duplicateArray = [2]i16{ 1, 2 };
     const ans = removeDuplicates(&duplicateArray);
     print("length of unique elements is {}\n", .{ans});
+    var insertionSortArr = [_]u8{ 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    insertionSort(&insertionSortArr);
+    for (insertionSortArr) |item| {
+        print("{} ", .{item});
+    }
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -131,4 +136,20 @@ fn removeDuplicates(arr: *[2]i16) usize {
         }
     }
     return i + 1;
+}
+
+fn insertionSort(arr: *[9]u8) void {
+    const n = arr.len - 1;
+    for (1..n) |i| {
+        const key = arr[i];
+        var j = i - 1;
+        while (j >= 0 and arr[j] > key) {
+            arr[j + 1] = arr[j];
+            if (j == 0) {
+                break;
+            }
+            j -= 1;
+        }
+        arr[j + 1] = key;
+    }
 }
