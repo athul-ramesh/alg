@@ -28,6 +28,8 @@ pub fn main() !void {
     for (insertionSortArr) |item| {
         print("{} ", .{item});
     }
+    var mergeSortArr = [_]u8{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    mergeSort(&mergeSortArr, 0, 9);
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -151,5 +153,51 @@ fn insertionSort(arr: *[9]u8) void {
             j -= 1;
         }
         arr[j + 1] = key;
+    }
+}
+
+fn merge(arr: *[10]u8, left: usize, mid: usize, right: usize) void {
+    const lLen = mid - left + 1;
+    const rLen = right - mid;
+    const L = [lLen]u8{0} ** lLen;
+    const R = [rLen]u8{0} ** rLen;
+    for (0..lLen - 1) |i| {
+        L[i] = arr[left + i];
+    }
+    for (0..rLen - 1) |i| {
+        R[i] = arr[mid + 1 + i];
+    }
+    var i = 0;
+    var j = 0;
+    var k = left;
+    while (i < lLen and j < rLen) : (k = k + 1) {
+        if (L[i] < R[j]) {
+            arr[k] = L[i];
+            i += 1;
+        } else {
+            arr[k] = R[j];
+            j += 1;
+        }
+    }
+    while (i < lLen) : ({
+        i += 1;
+        k += 1;
+    }) {
+        arr[k] = L[i];
+    }
+    while (j < rLen) : ({
+        j += 1;
+        k += 1;
+    }) {
+        arr[k] = R[j];
+    }
+}
+
+fn mergeSort(arr: *[10]u8, left: usize, right: usize) void {
+    if (left < right) {
+        const mid = @divFloor(left + right, 2);
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
     }
 }
