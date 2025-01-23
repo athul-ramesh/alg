@@ -28,8 +28,15 @@ pub fn main() !void {
     for (insertionSortArr) |item| {
         print("{} ", .{item});
     }
-    var mergeSortArr = [_]u8{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    mergeSort(&mergeSortArr, 0, 9);
+    // var mergeSortArr = [_]u8{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    // mergeSort(&mergeSortArr, 0, 9);
+
+    var remove_arr = [8]u8{ 0, 1, 2, 2, 3, 0, 4, 2 };
+    removeDupInPlace(&remove_arr, 2);
+    print("\nhere is the inline removed array\n", .{});
+    for (remove_arr) |item| {
+        print("{} ", .{item});
+    }
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -200,4 +207,21 @@ fn mergeSort(arr: *[10]u8, left: usize, right: usize) void {
         mergeSort(arr, mid + 1, right);
         merge(arr, left, mid, right);
     }
+}
+
+fn removeDupInPlace(arr: *[8]u8, val: u8) void {
+    var i: usize = 0;
+    var j: usize = arr.len - 1;
+    while (i < j) {
+        if (arr[i] == val and arr[j] != val) {
+            arr[i] = arr[j];
+            i += 1;
+            j -= 1;
+        } else if (arr[j] == val) {
+            j -= 1;
+        } else {
+            i += 1;
+        }
+    }
+    print("length of result array is {}\n", .{i + 1});
 }
