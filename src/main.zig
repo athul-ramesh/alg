@@ -37,6 +37,9 @@ pub fn main() !void {
     for (remove_arr) |item| {
         print("{} ", .{item});
     }
+    const str = "   fly me   to   the moon  ";
+    const last_word_count = len_last_word(str);
+    print("last word count {}\n", .{last_word_count});
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -224,4 +227,20 @@ fn removeDupInPlace(arr: *[8]u8, val: u8) void {
         }
     }
     print("length of result array is {}\n", .{i + 1});
+}
+
+fn len_last_word(str: *const [27:0]u8) u16 {
+    const len = str.len;
+    var i = len - 1;
+    var count: u16 = 0;
+    while (i >= 0) : (i -= 1) {
+        if (std.ascii.isAlphabetic(str[i])) {
+            count += 1;
+        } else {
+            if (count > 0) {
+                break;
+            }
+        }
+    }
+    return count;
 }
