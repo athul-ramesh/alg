@@ -40,6 +40,10 @@ pub fn main() !void {
     const str = "   fly me   to   the moon  ";
     const last_word_count = len_last_word(str);
     print("last word count {}\n", .{last_word_count});
+    var arr_binary = [_]u8{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    const target_binary = 5;
+    const index = binarySearch(&arr_binary, target_binary);
+    print("\n binary search index is {}\n ", .{index});
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -243,4 +247,20 @@ fn len_last_word(str: *const [27:0]u8) u16 {
         }
     }
     return count;
+}
+
+fn binarySearch(arr: *[10]u8, target: u8) usize {
+    var left: usize = 0;
+    var right: usize = arr.len - 1;
+    while (left <= right) {
+        const mid: usize = @divFloor(left + right, 2);
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return 0;
 }
