@@ -44,6 +44,10 @@ pub fn main() !void {
     const target_binary = 5;
     const index = binarySearch(&arr_binary, target_binary);
     print("\n binary search index is {}\n ", .{index});
+    const s_ = "avv";
+    const t = "vcc";
+    const isoRes = try isIsomorphic(s_, t);
+    print("{}\n", .{isoRes});
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -263,4 +267,50 @@ fn binarySearch(arr: *[10]u8, target: u8) usize {
         }
     }
     return 0;
+}
+
+fn isIsomorphic(s: *const [3:0]u8, t: *const [3:0]u8) !bool {
+    if (s.len != t.len) {
+        return false;
+    }
+
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    var mapST = std.AutoHashMap(u8, u8).init(allocator);
+    var mapTS = std.AutoHashMap(u8, u8).init(allocator);
+    defer {
+        mapST.deinit();
+        mapTS.deinit();
+    }
+
+    var i: usize = 0;
+    while (i < s.len) : (i += 1) {
+        const charS = s[i];
+        const charT = t[i];
+
+        if (mapST.contains(charT)) {
+            const val = mapST.get(charT);
+            if (val) |v| {
+                if (v != charS) {
+                    return false;
+                }
+            }
+        } else {
+            try mapST.put(charT, charS);
+        }
+
+        if (mapTS.contains(charS)) {
+            const val = mapTS.get(charS);
+            if (val) |v| {
+                if (v != charT) {
+                    return false;
+                }
+            }
+        } else {
+            try mapTS.put(charS, charT);
+        }
+    }
+
+    return true;
 }
