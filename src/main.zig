@@ -48,6 +48,9 @@ pub fn main() !void {
     const t = "vcc";
     const isoRes = try isIsomorphic(s_, t);
     print("{}\n", .{isoRes});
+    const nums = [3]i32{ 2, 2, 1 };
+    const answer = singleNumber(&nums);
+    print("{}", .{answer});
 }
 fn longestCommonPrefix(strs: [3][]const u8) void {
     if (strs.len == 0) {
@@ -313,4 +316,12 @@ fn isIsomorphic(s: *const [3:0]u8, t: *const [3:0]u8) !bool {
     }
 
     return true;
+}
+
+fn singleNumber(nums: *const [3]i32) i32 {
+    var ans: i32 = 0;
+    for (nums) |num| {
+        ans ^= num;
+    }
+    return ans;
 }
